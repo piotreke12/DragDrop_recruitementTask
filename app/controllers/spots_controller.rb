@@ -44,6 +44,7 @@ class SpotsController < ApplicationController
   # PATCH/PUT /spots/1
   # PATCH/PUT /spots/1.json
   def update
+    @origSpot = Spot.find(@spot.id)
     respond_to do |format|
       if @spot.update(spot_params)
         format.js

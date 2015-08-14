@@ -6,12 +6,12 @@
     <% end %>
 <% else %>
 	// when no errors render new point with possibility to change position by drag-drop feature
-    $("<%= escape_javascript(render @spot) %>").appendTo("#spots").draggable({
+    $("<%= j (render @spot) %>").appendTo("#spots").draggable({
     	stop: function( event, ui ) {
     		var spotId = event.target.id.match(/\d+/)
     		$.ajax({
 	  			method: "PATCH",
-	  			url: "/spots/"+spotId,
+	  			url: "<%= spot_path(@spot) %>",
 	  			data: { spot: {position_x: $(this).position().left, position_y: $(this).position().top} }
 			})
     	}

@@ -8,8 +8,7 @@
     
     // in case of errors render original spot with possibility to change position by drag-drop feature
     $("#spot<%=@spot.id%>").remove();
-    <% @origSpot = Spot.find(@spot.id) %>
-    $("<%= escape_javascript(render @origSpot) %>").appendTo("#spots").draggable({
+    $("<%= j (render @origSpot) %>").appendTo("#spots").draggable({
     	stop: function( event, ui ) {
     		var SpotId = event.target.id.match(/\d+/)
     		$.ajax({
