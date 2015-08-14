@@ -1,0 +1,24 @@
+
+<% if @spot.errors.any? %>
+	var errors = '';
+    <% @spot.errors.full_messages.each do |message| %>
+        errors += '<%= message %>\n';
+    <% end %>
+    alert(errors);
+    
+    // in case of errors render original spot with possibility to change position by drag-drop feature
+    $("#spot<%=@spot.id%>").remove();
+    <% @origSpot = Spot.find(@spot.id) %>
+    $("<%= escape_javascript(render @origSpot) %>").appendTo("#spots").draggable({
+    	stop: function( event, ui ) {
+    		var SpotId = event.target.id.match(/\d+/)
+    		$.ajax({
+	  			method: "PATCH",
+	  			url: "/spots/"+SpotId,
+	  			data: { spot: {position_x: $(this).position().left, position_y: $(this).position().top} }
+			})
+    	}
+    });
+<% else %>
+    alert("Update succeeded");
+<% end %>

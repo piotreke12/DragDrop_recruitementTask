@@ -1,0 +1,22 @@
+//if any error encountered - print them all, if not - show newly added point and message with new point info
+<% if @spot.errors.any? %>
+   
+    <% @spot.errors.full_messages.each do |message| %>
+        alert("\n<%= message %>\n");
+    <% end %>
+<% else %>
+	// when no errors render new point with possibility to change position by drag-drop feature
+    $("<%= escape_javascript(render @spot) %>").appendTo("#spots").draggable({
+    	stop: function( event, ui ) {
+    		var spotId = event.target.id.match(/\d+/)
+    		$.ajax({
+	  			method: "PATCH",
+	  			url: "/spots/"+spotId,
+	  			data: { spot: {position_x: $(this).position().left, position_y: $(this).position().top} }
+			})
+    	}
+    });
+
+    alert("Spot with position x: <%= @spot.position_x %> y: <%= @spot.position_y %> and name: <%= @spot.name%> successfully created!\n");
+    
+<% end %>
